@@ -1,0 +1,234 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #252525;
+}
+
+span{
+    color: #fff;
+}
+
+#game-area{
+    display: flex;
+    align-items: center;
+    gap: 1.3rem;
+    margin-top: 5rem;
+    flex-direction: column;
+}
+
+#game-over{
+    margin-top: 5rem;
+    color: #fff;
+}
+
+#line{
+    height: 2px;
+    width: 25rem;
+    background-color: #fff;
+}
+
+#header{
+    font-size: 4rem;
+    color: #fff;
+}
+
+#game-board{
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    justify-content: center;
+    gap: .7rem;
+    height: 40rem;
+    padding: 1rem;
+    width: 30rem;
+    /* background-color: red;+ */
+}
+
+.tile{
+    display: flex;
+    height: 108.635px;
+    width: 90.635px;
+    justify-content: center;
+    align-items: center;
+    transition: 1s ease;
+    animation: typed 1s;
+    border: 2px solid #fff;
+    font-size: 5rem;
+    border-radius: 10px;
+}
+
+.typed{
+    border-color: grey;
+    animation: entered .1s ease-in-out;
+}
+
+.correct{
+    animation: revealRight .6s ease-in forwards;
+    color: white;
+}
+
+.wrongSpot{
+    animation: revealThere .6s ease-in forwards;
+    color: white;
+}
+
+.notThere{
+    color: white;
+    animation: revealWrong .6s ease-in-out forwards;
+}
+
+/* KeyBoard Styles */
+
+.keys{
+    padding: .2rem;
+    background-color: gray;
+    font-size: 2rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.keys:hover{
+    opacity: .8;
+    cursor: pointer;
+    transition: .5s ease;
+}
+
+#keyboard{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#row1{
+    gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(11,1fr);
+}
+
+#row2{
+    gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(9,1fr);
+}
+
+#row3{
+    gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(8,1fr);
+}
+
+.wrongKey{
+    padding: .2rem;
+    background-color: rgb(87, 86, 86);
+    font-size: 2rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: default;
+}
+
+.keyExist{
+    padding: .2rem;
+    background-color: rgb(235, 164, 32);
+    font-size: 2rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: default;
+}
+
+.rightKey{
+    padding: .2rem;
+    background-color: rgb(49, 148, 49);
+    font-size: 2rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: default;
+}
+
+.victory{
+    animation: 1s ease victory forwards;
+}
+
+
+
+@keyframes revealRight{
+    0%{
+        transform: rotateX(0deg);
+    }
+    
+    50%{
+        transform: rotateX(90deg);
+        background-color: #252525;
+        color: #252525;
+    }
+    100%{
+        background-color: rgb(49, 148, 49);
+    }
+}
+
+
+@keyframes revealThere{
+    0%{
+        transform: rotateX(0deg);
+    }
+    
+    50%{
+        transform: rotateX(90deg);
+        background-color: #252525;
+        color: #252525;
+    }
+    100%{
+        background-color: rgb(235, 164, 32);
+    }
+}
+
+
+
+@keyframes revealWrong{
+    0%{
+        transform: rotateX(0deg);
+    }
+    
+    50%{
+        transform: rotateX(90deg);
+        background-color: #252525;
+        color: #252525;
+    }
+    100%{
+        background-color: gray;
+    }
+}
+
+
+
+@keyframes entered{
+    0%,100%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(1.1);
+    }
+}
+
+
+
+
+@keyframes victory {
+    from{
+        transform: translateX(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+        background-color: rgb(49, 148, 49);;
+    }
+}
