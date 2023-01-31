@@ -9,6 +9,7 @@ let boardRows = 6;
 let boardColumns = 5;
 let c = 0
 let r = 0
+let canType = true
 
 let numberOne = 1
 let numberTwo = 2
@@ -19,7 +20,7 @@ let numberFive = 5
 const wordList = ['house','About','Piano','House','Alone','Above','Media','Radio','Voice','Value','Alive','Ocean','Image','Olive','Quiet','Video','Cause','Sauce','Movie','Juice','Noise','Abuse','Opera','Naive','Email','Azure']
 
 
-let word = 'VIANA'
+let word = 'HOUSE'
 //  wordList[Math.floor(Math.random()*wordList.length)]
 
 
@@ -34,8 +35,23 @@ let gameOver = false;
 window.onload = function(){
     startGame()
 }
+
+function setDelay(time =0){
+    document.querySelector(`#game-board :nth-child(${numberOne - time})`).style.animationDelay = '.35s'
+    document.querySelector(`#game-board :nth-child(${numberTwo - time})`).style.animationDelay = '.50s'
+    document.querySelector(`#game-board :nth-child(${numberThree - time})`).style.animationDelay = '.65s'
+    document.querySelector(`#game-board :nth-child(${numberFour - time})`).style.animationDelay = '.80s'
+    document.querySelector(`#game-board :nth-child(${numberFive - time})`).style.animationDelay = '.95s'
+}
+
+
+
 const checkWord = function(){
-    if(c !== boardColumns)return
+    if(c !== boardColumns){
+        alert('Enter a 5 Letter Word!')
+        setTimeout(() => canType = true, 1);
+        return
+    }
             let correct = 0
             let letterCount = {};
             for(let i = 0; i<word.length;i++){
@@ -45,48 +61,36 @@ const checkWord = function(){
                 }
                 else letterCount[letter] = 1
             }
-            console.log('1st Check: ' ,letterCount);
-        
             //Goes and Marks Which are Correct
             for(let c = 0;c<boardColumns;c++){
                 let curTile = document.getElementById(`${r}-${c}`)
-                document.querySelector(`#game-board :nth-child(${numberOne})`).style.animationDelay = '.35s'
-                document.querySelector(`#game-board :nth-child(${numberTwo})`).style.animationDelay = '.50s'
-                document.querySelector(`#game-board :nth-child(${numberThree})`).style.animationDelay = '.65s'
-                document.querySelector(`#game-board :nth-child(${numberFour})`).style.animationDelay = '.80s'
-                document.querySelector(`#game-board :nth-child(${numberFive})`).style.animationDelay = '.95s'
-
                 let letter = curTile.innerHTML
-
+                setDelay()
+                
                 if(word[c] == letter){
                     curTile.classList.add('correct')
                     setTimeout(() => document.querySelector(`#${word[c]}`).classList.add('rightKey'), 2000);
                     correct++
                     letterCount[letter] -= 1
-                    console.log('Check Right: ' ,letterCount);
                 }
                 
                 
                 if(correct === word.length){
                     gameOver = true
-                    setTimeout(() => gameOverMsg.textContent = `The Word Was: ${word}`, 2000);
-                    document.querySelector(`#game-board :nth-child(${numberOne})`).classList.add('victory')
-                    document.querySelector(`#game-board :nth-child(${numberTwo})`).classList.add('victory')
-                    document.querySelector(`#game-board :nth-child(${numberThree})`).classList.add('victory')
-                    document.querySelector(`#game-board :nth-child(${numberFour})`).classList.add('victory')
-                    document.querySelector(`#game-board :nth-child(${numberFive})`).classList.add('victory')
+                    setTimeout(()=>{
+                        gameOverMsg.textContent = `The Word Was: ${word}`
+                        document.querySelector(`#game-board :nth-child(${numberOne-5})`).classList.add('victory')
+                        document.querySelector(`#game-board :nth-child(${numberTwo-5})`).classList.add('victory')
+                        document.querySelector(`#game-board :nth-child(${numberThree-5})`).classList.add('victory')
+                        document.querySelector(`#game-board :nth-child(${numberFour-5})`).classList.add('victory')
+                        document.querySelector(`#game-board :nth-child(${numberFive-5})`).classList.add('victory')
+                    },2500)
                 }
 
             }
             //Go Again and Mark Which are Present
             for(let c = 0;c<boardColumns;c++){
                 let curTile = document.getElementById(`${r}-${c}`)
-                document.querySelector(`#game-board :nth-child(${numberOne})`).style.animationDelay = '.35s'
-                document.querySelector(`#game-board :nth-child(${numberTwo})`).style.animationDelay = '.50s'
-                document.querySelector(`#game-board :nth-child(${numberThree})`).style.animationDelay = '.65s'
-                document.querySelector(`#game-board :nth-child(${numberFour})`).style.animationDelay = '.80s'
-                document.querySelector(`#game-board :nth-child(${numberFive})`).style.animationDelay = '.95s'
-
                 let letter = curTile.innerHTML
                 
 
@@ -96,7 +100,6 @@ const checkWord = function(){
                     setTimeout(() => document.querySelector(`#${letter}`).classList.add('keyExist'), 2000);
                     curTile.classList.add('wrongSpot') 
                     letterCount[letter] -= 1
-                    console.log('Check If There: ' ,letterCount);
                 }
                 
                 else{
@@ -137,11 +140,11 @@ function startGame(){
     }
 
     document.addEventListener('keydown',e=>{
-        if(gameOver || r===6)return
+        if(gameOver || r===6 || !canType)return
         if('a'<= e.key && 'z'>= e.key){
             if(c<boardColumns){
                 let curTile = document.getElementById(`${r}-${c}`)
-                if(curTile.textContent == ''){
+                if(curTile?.textContent == ''){
                     curTile.classList.add('typed')
                     curTile.textContent = e.key.toUpperCase()
                     c++
@@ -152,24 +155,21 @@ function startGame(){
         
         else if (e.key === 'Enter'){
             checkWord()
-            if(r===5){
+            canType = false
+            setTimeout(() => canType = true, 2000);
+            if(r==6 && c==0){
                 setTimeout(() => gameOverMsg.textContent = `The Word Was: ${word}`, 2000);
                 return
             }
 
-    }
-
-            
-            
-            
+        }   
     })
 }
-
 //Register Keyboard Presses
 keys.forEach(key=>{
     const keyboardKeys = key
     keyboardKeys.addEventListener('click',()=>{
-        if(gameOver || r===6)return
+        if(gameOver || r===6 || !canType)return
         if('A'<= key.textContent && 'Z'>= key.textContent && key.textContent !== 'Enter'){
             if(c<boardColumns){
                 let curTile = document.getElementById(`${r}-${c}`)
@@ -183,9 +183,13 @@ keys.forEach(key=>{
         else if (key.textContent == '«')backSpace()
         
         else if (key.textContent == 'Enter'){
-            if(c !== boardColumns)return
-            if(r===5)return
             checkWord()
+            canType = false
+            setTimeout(() => canType = true, 2000);
+            if(r==6 && c==0){
+                setTimeout(() => gameOverMsg.textContent = `The Word Was: ${word}`, 2000);
+                return
+            } 
         }
     })
 });
